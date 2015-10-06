@@ -1,6 +1,5 @@
 # HVC-C2W iOS-SDK by OMRON
 
-###  現在、本SDKはAPI仕様書、WebAPI仕様書、ヘッダファイルのみの提供となりコンパイル出来ませんのでご了承下さい。
 
 ### 1. SDK内容
   iPhone,iPadからオムロン製HVC-C2Wを制御するためのSDK(α版)を提供します。
