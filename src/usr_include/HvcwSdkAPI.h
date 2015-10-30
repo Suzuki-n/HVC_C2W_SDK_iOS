@@ -55,6 +55,12 @@ extern "C" {
 #define HVCW_POSE_ANGLE_HALF_PROFILE  (1)              /* Half Profile */
 #define HVCW_POSE_ANGLE_PROFILE       (2)              /* Profile      */
 
+#define HVCW_PET_TYPE_DOG             (0)              /* ペット検出結果のペット識別：犬 */
+#define HVCW_PET_TYPE_CAT             (1)              /* ペット検出結果のペット識別：猫 */
+
+#define HVCW_GENDER_FEMALE            (0)              /* 性別推定結果の性別：女性 */
+#define HVCW_GENDER_MALE              (1)              /* 性別推定結果の性別：男性 */
+
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
 /*                                 ENUM DEFINES                                */
@@ -65,9 +71,9 @@ extern "C" {
  * ライブストリーミングビデオ解像度
  */
 typedef enum HVCW_VideoResolution {
-    HVCW_VideoResolution_High = 0,        /* 1280x720 */
-    HVCW_VideoResolution_Middle,          /*  864x480 */
-    HVCW_VideoResolution_Low              /*  432x240 */
+    HVCW_VideoResolution_High = 0,        /* 0=1280x720 */
+    HVCW_VideoResolution_Middle,          /* 1= 640x360 */
+    HVCW_VideoResolution_Low              /* 2= 320x180 */
 } HVCW_VIDEO_RESOLUTION;
 
 /**
@@ -75,8 +81,8 @@ typedef enum HVCW_VideoResolution {
  * NightVisionモード
  */
 typedef enum HVCW_NightVisionMode {
-    HVCW_NightVisionMode_Auto = 0,        /* NightVisionの有効・無効を周囲の明るさによって自動制御するモード */
-    HVCW_NightVisionMode_Manual           /* NightVisionの有効・無効を手動設定するモード                     */
+    HVCW_NightVisionMode_Auto = 0,        /* 0=NightVisionの有効・無効を周囲の明るさによって自動制御するモード */
+    HVCW_NightVisionMode_Manual           /* 1=NightVisionの有効・無効を手動設定するモード                     */
 } HVCW_NIGHT_VISION_MODE;
 
 /**
@@ -84,8 +90,8 @@ typedef enum HVCW_NightVisionMode {
  * NightVisionステータス
  */
 typedef enum HVCW_NightVisionStatus {
-    HVCW_NightVisionStatus_Off = 0,       /* NightVision無効 */
-    HVCW_NightVisionStatus_On             /* NightVision有効 */
+    HVCW_NightVisionStatus_Off = 0,       /* 0=NightVision無効 */
+    HVCW_NightVisionStatus_On             /* 1=NightVision有効 */
 } HVCW_NIGHT_VISION_STATUS;
 
 /**
@@ -93,14 +99,14 @@ typedef enum HVCW_NightVisionStatus {
  * イベント
  */
 typedef enum HVCW_Event{
-    HVCW_Event_ConnectionNum   = 0,       /* カメラへの接続数が変更された場合に通知する。               */
-    HVCW_Event_StreamingNum,              /* カメラのライブストリーミング数が変更された場合に通知する。 */
-    HVCW_Event_NightVisionMode = 6,       /* NightVisionモードが変更された場合に通知する。              */
-    HVCW_Event_NightVisionStatus,         /* NightVisionステータスが変更された場合に通知する。          */
-    HVCW_Event_SpeakerVolume   = 9,       /* カメラのスピーカーボリュームが変更された場合に通知する。   */
-    HVCW_Event_Disconnected    = 13,      /* カメラとの接続が切断した場合に通知する。                   */
-    HVCW_Event_Reconnected,               /* 切断されたカメラとの接続が回復した場合に通知する。         */
-    HVCW_Event_StorageStatus   = 18       /* カメラのストレージステータスが変更された場合に通知する。   */
+    HVCW_Event_ConnectionNum   = 0,       /*  0=カメラへの接続数が変更された場合に通知する。               */
+    HVCW_Event_StreamingNum,              /*  1=カメラのライブストリーミング数が変更された場合に通知する。 */
+    HVCW_Event_NightVisionMode = 6,       /*  6=NightVisionモードが変更された場合に通知する。              */
+    HVCW_Event_NightVisionStatus,         /*  7=NightVisionステータスが変更された場合に通知する。          */
+    HVCW_Event_SpeakerVolume   = 9,       /*  9=カメラのスピーカーボリュームが変更された場合に通知する。   */
+    HVCW_Event_Disconnected    = 13,      /* 13=カメラとの接続が切断した場合に通知する。                   */
+    HVCW_Event_Reconnected,               /* 14=切断されたカメラとの接続が回復した場合に通知する。         */
+    HVCW_Event_StorageStatus   = 18       /* 18=カメラのストレージステータスが変更された場合に通知する。   */
 }HVCW_EVENT;
 
 /**
@@ -108,13 +114,13 @@ typedef enum HVCW_Event{
  * ストレージステータス
  */
 typedef enum HVCW_StorageStatus{
-    HVCW_StorageStatus_NotInsert = 0,     /* ストレージ未検出                                                                           */
-    HVCW_StorageStatus_NotReady,          /* ストレージ検出済みだが使用不可状態（マウント処理中、ストレージ確認中など）                 */
-    HVCW_StorageStatus_NeedFormat,        /* ストレージはフォーマットが必要な状態で使用不可能。ユーザーにフォーマットを促す必要がある。 */
-    HVCW_StorageStatus_Normal,            /* ストレージ使用可能                                                                         */
-    HVCW_StorageStatus_Error,             /* ストレージにエラーが発生し使用不可能状態                                                   */
-    HVCW_StorageStatus_Formatting = 6,    /* ストレージフォーマット中                                                                   */
-    HVCW_StorageStatus_NotSupport         /* サポート対象外ストレージ                                                                   */
+    HVCW_StorageStatus_NotInsert = 0,     /* 0=ストレージ未検出                         */
+    HVCW_StorageStatus_NotReady,          /* 1=ストレージ検出済みだが使用不可状態       */
+    HVCW_StorageStatus_NeedFormat,        /* 2=ストレージはフォーマットが必要な状態     */
+    HVCW_StorageStatus_Normal,            /* 3=ストレージ使用可能                       */
+    HVCW_StorageStatus_Error,             /* 4=ストレージにエラーが発生し使用不可能状態 */
+    HVCW_StorageStatus_Formatting = 6,    /* 6=ストレージフォーマット中                 */
+    HVCW_StorageStatus_NotSupport         /* 7=サポート対象外ストレージ                 */
 } HVCW_STORAGE_STATUS;
 
 /**
@@ -122,13 +128,13 @@ typedef enum HVCW_StorageStatus{
  * ストレージフォーマット結果
  */
 typedef enum HVCW_StorageFormatResultCode {
-    HVCW_StorageFormatResultCode_Success = 0,        /* フォーマット成功                     */
-    HVCW_StorageFormatResultCode_RemovedStorage,     /* フォーマット中にストレージが抜かれた */
-    HVCW_StorageFormatResultCode_NotSupportStorage,  /* サポートしていないストレージ         */
-    HVCW_StorageFormatResultCode_Timeout,            /* フォーマット中にタイムアウトが発生   */
-    HVCW_StorageFormatResultCode_AlreadyRunning,     /* 既にフォーマットを実行中             */
-    HVCW_StorageFormatResultCode_CheckDisk,          /* チェックディスク実行中               */
-    HVCW_StorageFormatResultCode_FatalError          /* 上記以外のエラー                     */
+    HVCW_StorageFormatResultCode_Success = 0,        /* 0=フォーマット成功                     */
+    HVCW_StorageFormatResultCode_RemovedStorage,     /* 1=フォーマット中にストレージが抜かれた */
+    HVCW_StorageFormatResultCode_NotSupportStorage,  /* 2=サポートしていないストレージ         */
+    HVCW_StorageFormatResultCode_Timeout,            /* 3=フォーマット中にタイムアウトが発生   */
+    HVCW_StorageFormatResultCode_AlreadyRunning,     /* 4=既にフォーマットを実行中             */
+    HVCW_StorageFormatResultCode_CheckDisk,          /* 5=チェックディスク実行中               */
+    HVCW_StorageFormatResultCode_FatalError          /* 6=上記以外のエラー                     */
 } HVCW_STORAGE_FORMAT_RESULT_CODE;
 
 /**
@@ -136,10 +142,10 @@ typedef enum HVCW_StorageFormatResultCode {
  * 接続種別
  */
 typedef enum HVCW_ConnectionType {
-    HVCW_ConnectionType_Disconnect = 0,   /* 未接続    */
-    HVCW_ConnectionType_P2P,              /* P2P接続   */
-    HVCW_ConnectionType_Relay,            /* Relay接続 */
-    HVCW_ConnectionType_Local             /* Local接続 */
+    HVCW_ConnectionType_Disconnect = 0,   /* 0=未接続    */
+    HVCW_ConnectionType_P2P,              /* 1=P2P接続   */
+    HVCW_ConnectionType_Relay,            /* 2=Relay接続 */
+    HVCW_ConnectionType_Local             /* 3=Local接続 */
 } HVCW_CONNECTION_TYPE;
 
 /**
@@ -147,48 +153,40 @@ typedef enum HVCW_ConnectionType {
  * ライブイベント
  */
 typedef enum HVCW_LiveEvent{
-    HVCW_LiveEvent_Started = 0,           /* ライブストリーミング開始後、ビデオのデコードを開始したタイミングで通知する。                                                     */
-    HVCW_LiveEvent_Stopped,               /* ライブストリーミング停止時に通知する。                                                                                           */
-    HVCW_LiveEvent_Disconnected,          /* カメラとの接続が切断された場合に通知する。C2W_StopLive()を使用してライブストリーミングを停止する必要がある。                     */
-    HVCW_LiveEvent_Error,                 /* ライブストリーミング継続不能なエラーが発生した場合に通知する。C2W_StopLive()を使用してライブストリーミングを停止する必要がある。 */
-    HVCW_LiveEvent_FPS,                   /* FPS情報を通知する。                                                                                                              */
-    HVCW_LiveEvent_ChangeResolution       /* ライブストリーミングの解像度が変更された場合に通知する。                                                                         */
+    HVCW_LiveEvent_Started = 0,           /* 0=ライブストリーミング開始後、ビデオのデコードを開始したタイミングで通知する。                                                     */
+    HVCW_LiveEvent_Stopped,               /* 1=ライブストリーミング停止時に通知する。                                                                                           */
+    HVCW_LiveEvent_Disconnected,          /* 2=カメラとの接続が切断された場合に通知する。HVCW_StopLive()を使用してライブストリーミングを停止する必要がある。                    */
+    HVCW_LiveEvent_Error,                 /* 3=ライブストリーミング継続不能なエラーが発生した場合に通知する。HVCW_StopLive()を使用してライブストリーミングを停止する必要がある。*/
+    HVCW_LiveEvent_FPS,                   /* 4=FPS情報を通知する。                                                                                                              */
+    HVCW_LiveEvent_ChangeResolution       /* 5=ライブストリーミングの解像度が変更された場合に通知する。                                                                         */
 }HVCW_LIVE_EVENT;
 
 /* スケジューラタイプ */
 typedef enum HVCW_ScheduleType{
-    HVCW_ScheduleType_OneTime = 0,        /* 0=onetime（一回実行）  */
-    HVCW_ScheduleType_Repeat,             /* 1=Repeat（一期間実行） */
+    HVCW_ScheduleType_OneTime = 0,        /* 0=Onetimeスケジューラ  */
+    HVCW_ScheduleType_Repeat,             /* 1=Repeatスケジューラ   */
     HVCW_ScheduleType_Max
 } HVCW_SCHEDULER_TYPE;
 
 /* イベントタイプ */
 typedef enum HVCW_EventProgramType{
-    HVCW_EventProgramType_Sound = 0,      /* 0=sound */
-    HVCW_EventProgramType_Motion,         /* 1=motion */
-    HVCW_EventProgramType_Timer,          /* 2=timer */
+    HVCW_EventProgramType_Sound = 0,      /* 0=音声検知イベント */
+    HVCW_EventProgramType_Motion,         /* 1=動体検知イベント */
+    HVCW_EventProgramType_Timer,          /* 2=タイマーイベント */
     HVCW_EventProgramType_Max
 } HVCW_EVENT_PROGRAM_TYPE;
 
-typedef enum HVCW_ImageSize {
-    HVCW_ImageSize_FullHD = 0,            /* 0=画像サイズFullHD(1920x1080) */
-    HVCW_ImageSize_HD,                    /* 1=画像サイズHD(1280x720)      */
-    HVCW_ImageSize_WVGA,                  /* 2=画像サイズWVGA(864x480)     */
-    HVCW_ImageSize_WQVGA,                 /* 3=画像サイズWQVGA(432x480)    */
-    HVCW_ImageSize_Max
-} HVCW_IMAGE_SIZE;
-
 typedef enum HVCW_ScheduleFrequency{
-    HVCW_ScheduleFrequency_Once = 0,      /* 0=スケジュール一回実行     */
-    HVCW_ScheduleFrequency_Daily,         /* 1=スケジュール毎日実行     */
-    HVCW_ScheduleFrequency_Weekday,       /* 2=スケジュール指定曜日実行 */
+    HVCW_ScheduleFrequency_Once = 0,      /* 0=一回実行     */
+    HVCW_ScheduleFrequency_Daily,         /* 1=毎日実行     */
+    HVCW_ScheduleFrequency_Weekday,       /* 2=指定曜日実行 */
     HVCW_ScheduleFrequency_Max
 } HVCW_SCHEDULE_FREQUENCY;
 
 typedef enum HVCW_SaveResult{
-   HVCW_SaveResult_None = 0,              /* 0=保存なし         */
-   HVCW_SaveResult_All,                   /* 1=すべて保存       */
-   HVCW_SaveResult_Detection,             /* 2=OKAOの結果で保存 */
+   HVCW_SaveResult_None = 0,              /* 0=保存なし                       */
+   HVCW_SaveResult_All,                   /* 1=すべて保存                     */
+   HVCW_SaveResult_Detection,             /* 2=OKAOの条件を満たした場合に保存 */
    HVCW_SaveResult_Max
 } HVCW_SAVE_RESULT;
 
@@ -201,37 +199,36 @@ typedef enum HVCW_FRSaveResult{
 } HVCW_FR_SAVE_RESULT;
 
 typedef enum HVCW_FileExt {
-    HVCW_FileExt_Log               = 2,   /* ログファイル(log)               */
-    HVCW_FileExt_MessageText       = 3,   /* メッセージテキストファイル(txt) */
-    HVCW_FileExt_Sound             = 4,   /* 音声ファイル(wav)               */
-    HVCW_FileExt_JpgImage          = 6,   /* 画像ファイル(jpg)               */
-    HVCW_FileExt_YUVImage          = 7,   /* 画像ファイル(yuv)               */
-    HVCW_FileExt_ThumbnailJpgImage = 8    /* サムネイル画像ファイル(jpg)     */
+    HVCW_FileExt_Log = 2,                 /* 2=ログファイル                */
+    HVCW_FileExt_MessageText,             /* 3=メッセージテキストファイル  */
+    HVCW_FileExt_Sound,                   /* 4=音声ファイル                */
+    HVCW_FileExt_JpgImage = 6,            /* 6=JPEG画像ファイル            */
+    HVCW_FileExt_ThumbnailJpgImage = 8    /* 8=サムネイル画像ファイル      */
 } HVCW_FILE_EXT;
 
 typedef enum HVCW_OkaoFunction{
-    HVCW_OkaoFunction_Body = 0,           /* 0=人体検出     */
-    HVCW_OkaoFunction_Hand,               /* 1=手検出       */
-    HVCW_OkaoFunction_Pet,                /* 2=ペット検出   */
-    HVCW_OkaoFunction_Face,               /* 3=顔検出       */
-    HVCW_OkaoFunction_Direction,          /* 4=顔向き推定   */
-    HVCW_OkaoFunction_Age,                /* 5=年齢推定     */
-    HVCW_OkaoFunction_Gender,             /* 6=性別推定     */
-    HVCW_OkaoFunction_Gaze,               /* 7=視線推定     */
-    HVCW_OkaoFunction_Blink,              /* 8=目つむり推定 */
-    HVCW_OkaoFunction_Expression,         /* 9=表情推定     */
-    HVCW_OkaoFunction_Recognition,        /* 10=顔認証      */
+    HVCW_OkaoFunction_Body = 0,           /*  0=人体検出     */
+    HVCW_OkaoFunction_Hand,               /*  1=手検出       */
+    HVCW_OkaoFunction_Pet,                /*  2=ペット検出   */
+    HVCW_OkaoFunction_Face,               /*  3=顔検出       */
+    HVCW_OkaoFunction_Direction,          /*  4=顔向き推定   */
+    HVCW_OkaoFunction_Age,                /*  5=年齢推定     */
+    HVCW_OkaoFunction_Gender,             /*  6=性別推定     */
+    HVCW_OkaoFunction_Gaze,               /*  7=視線推定     */
+    HVCW_OkaoFunction_Blink,              /*  8=目つむり推定 */
+    HVCW_OkaoFunction_Expression,         /*  9=表情推定     */
+    HVCW_OkaoFunction_Recognition,        /* 10=顔認証       */
     HVCW_OkaoFunction_Max
 } HVCW_OKAO_FUNCTION;
 
 /* 表情 */
 typedef enum HVCW_Expression {
-    HVCW_Expression_Ignore = -1,          /* -1=無視        */
-    HVCW_Expression_Neutral = 0,          /* 0=表情：無表情 */
-    HVCW_Expression_Happiness,            /* 1=表情：喜び   */
-    HVCW_Expression_Surprise,             /* 2=表情：驚き   */
-    HVCW_Expression_Anger,                /* 3=表情：怒り   */
-    HVCW_Expression_Sadness,              /* 4=表情：悲しみ */
+    HVCW_Expression_Ignore = -1,          /* -1=無視         */
+    HVCW_Expression_Neutral = 0,          /*  0=表情：無表情 */
+    HVCW_Expression_Happiness,            /*  1=表情：喜び   */
+    HVCW_Expression_Surprise,             /*  2=表情：驚き   */
+    HVCW_Expression_Anger,                /*  3=表情：怒り   */
+    HVCW_Expression_Sadness,              /*  4=表情：悲しみ */
     HVCW_Expression_Max
 } HVCW_EXPRESSION;
 
@@ -266,6 +263,10 @@ typedef struct{
     HVCW_UINT32        height;                 /* 縦幅                           */
 } HVCW_VIDEOFRAME;
 
+/**
+ * @struct HVCW_Point
+ * 座標点構造体
+ */
 typedef struct {
     HVCW_INT32 nX;                             /* X座標       */
     HVCW_INT32 nY;                             /* Y座標       */
@@ -283,7 +284,7 @@ typedef struct {
 } HVCW_RECT;
 
 /**
- * @struct HVCW_Rect
+ * @struct HVCW_DetectionParam
  * 動体検知パラメータ構造体
  */
 typedef struct {
@@ -300,15 +301,15 @@ typedef struct {
 } HVCW_SCHEDULE_TIME;
 
 typedef struct {
-    HVCW_INT32 nIndex;                           /* Onetimeのインデックス（Onetimeの場合のみ）*/
-    HVCW_SCHEDULE_FREQUENCY frequency;           /* スケジュールのサイクル                    */
-    HVCW_BOOL bWeekday[7];                       /* frequencyが"Weekday"の場合、設定が有効    */
-    HVCW_SCHEDULE_TIME startTime;                /* 開始時間                                  */
-    HVCW_SCHEDULE_TIME endTime;                  /* 終了時間                                  */
-    HVCW_INT32 nInterval;                        /* 処理のインターバル                        */
-    HVCW_BOOL abFunction[HVCW_OkaoFunction_Max]; /* OKAOの使用機能フラグ                      */
-    HVCW_SAVE_RESULT saveLog;                    /* ログの保存方法                            */
-    HVCW_SAVE_RESULT saveImage;                  /* 画像の保存方法                            */
+    HVCW_INT32 nIndex;                           /* Onetimeスケジューラのインデックス（Onetimeの場合のみ）*/
+    HVCW_SCHEDULE_FREQUENCY frequency;           /* スケジュールのサイクル                                */
+    HVCW_BOOL bWeekday[7];                       /* 曜日設定（frequencyが"Weekday"の場合のみ、設定が有効）*/
+    HVCW_SCHEDULE_TIME startTime;                /* 開始時間                                              */
+    HVCW_SCHEDULE_TIME endTime;                  /* 終了時間（Repeatの場合のみ）                          */
+    HVCW_INT32 nInterval;                        /* 処理のインターバル                                    */
+    HVCW_BOOL abFunction[HVCW_OkaoFunction_Max]; /* OKAOの使用機能フラグ                                  */
+    HVCW_SAVE_RESULT saveLog;                    /* ログの保存方法                                        */
+    HVCW_SAVE_RESULT saveImage;                  /* 画像の保存方法                                        */
 } HVCW_SCHEDULE_INFO;
 
 typedef struct {
@@ -433,28 +434,28 @@ typedef struct {
 } HVCW_OKAO_RESULT;
 
 typedef struct {
-    HVCW_CHAR   acName[40];                    /* ファイル名称                */
-    HVCW_INT32  nSize;                         /* ファイルのサイズ            */
-    HVCW_UINT32 Reserved;                      /* Reserved (実際はファイルID) */
+    HVCW_CHAR   acName[40];                    /* ファイル名称     */
+    HVCW_INT32  nSize;                         /* ファイルのサイズ */
+    HVCW_UINT32 Reserved;                      /* Reserved         */
 } HVCW_FILEINFO;
 
 typedef struct {
     HVCW_RECT area;             /* 動体検知エリア         */
     HVCW_INT32 nSensitivity;    /* 動体検知感度           */
-    HVCW_UINT32 unDuration;     /* 動体検知時間           */
-    HVCW_UINT32 unRatio;        /* 動体検知時間の割合     */
+    HVCW_UINT32 unDuration;     /* 動体検知判定時間       */
+    HVCW_UINT32 unRatio;        /* 動体検知判定割合       */
     HVCW_UINT32 unOffPeriod;    /* イベントのインターバル */
 } HVCW_EP_MOTION_EVENT;
 
 typedef struct {
-    HVCW_INT32  nSensitivity;   /* 音声検知感度 */
-    HVCW_UINT32 unDuration;     /* 音声検知時間 */
-    HVCW_UINT32 unRatio;        /* 音声検知時間の割合 */
+    HVCW_INT32  nSensitivity;   /* 音声検知感度           */
+    HVCW_UINT32 unDuration;     /* 音声検知判定時間       */
+    HVCW_UINT32 unRatio;        /* 音声検知判定割合       */
     HVCW_UINT32 unOffPeriod;    /* イベントのインターバル */
 } HVCW_EP_SOUND_EVENT;
 
 typedef struct {
-    HVCW_UINT32 unInterval;     /* イベント間隔 */
+    HVCW_UINT32 unInterval;     /* イベント インターバル */
 } HVCW_EP_TIMER_EVENT;
 
 typedef struct {
@@ -527,28 +528,28 @@ typedef struct {
 } HVCW_EP_POST_PROCESS;
 
 typedef struct {
-    HVCW_INT32 nUserID;                     /*  */
-    HVCW_FILEINFO fileInfo;                 /*  */
+    HVCW_INT32 nUserID;                     /* ユーザID */
+    HVCW_FILEINFO fileInfo;                 /* 対象のファイル */
 } HVCW_EP_KNOWNUSER;
 
 typedef struct {
-    HVCW_EP_KNOWNUSER knownUser[20];        /*  */
-    HVCW_EP_PUSH_ALERT unknownUser;         /*  */
+    HVCW_EP_KNOWNUSER knownUser[20];        /* 登録している人物の場合の処理 */
+    HVCW_EP_PUSH_ALERT unknownUser;         /* 登録していない人物の場合の処理 */
 } HVCW_EP_FR_PUSH_ALERT;
 
 typedef struct {
-    HVCW_EP_KNOWNUSER knownUser[20];        /*  */
-    HVCW_EP_SOUND unknownUser;              /*  */
+    HVCW_EP_KNOWNUSER knownUser[20];        /* 登録している人物 */
+    HVCW_EP_SOUND unknownUser;              /* 登録していない人物 */
 } HVCW_EP_FR_SOUND;
 
 typedef struct {
-    HVCW_EP_FR_PUSH_ALERT pushAlert;        /*  */
-    HVCW_EP_FR_SOUND      sound;            /*  */
+    HVCW_EP_FR_PUSH_ALERT pushAlert;        /* プッシュ通知設定 */
+    HVCW_EP_FR_SOUND      sound;            /* 音声出力設定 */
 } HVCW_EP_FR_NOTIFICATION;
 
 typedef struct {
-    HVCW_FR_SAVE_RESULT     saveImage;      /*  */
-    HVCW_EP_FR_NOTIFICATION notification;   /*  */
+    HVCW_FR_SAVE_RESULT     saveImage;      /* 画像の保存 */
+    HVCW_EP_FR_NOTIFICATION notification;   /* 顔認証通知設定 */
 } HVCW_EP_FR_POST_PROCESS;
 
 typedef struct {
@@ -578,10 +579,10 @@ typedef struct {
 } HVCW_EVENT_PROGRAM_TIMER;
 
 typedef struct {
-    HVCW_UINT32          ucTotalSize;       /* total_size ストレージ総容量（単位:Kバイト）                              */
-    HVCW_UINT32          ucUsedSize;        /* used_size 使用済みストレージ容量（単位:Kバイト）                         */
-    HVCW_UINT32          ucFreeSize;        /* free_size 空きストレージ容量（単位:Kバイト）                             */
-    HVCW_STORAGE_STATUS  storageStatus;     /* storage_status ストレージステータス（ストレージステータス列挙型を参照） */
+    HVCW_UINT32          ucTotalSize;       /* ストレージ総容量(KB)       */
+    HVCW_UINT32          ucUsedSize;        /* 使用済みストレージ容量(KB) */
+    HVCW_UINT32          ucFreeSize;        /* 空きストレージ容量(KB)     */
+    HVCW_STORAGE_STATUS  storageStatus;     /* ストレージステータス       */
 } HVCW_STORAGEINFO;
 
 /**********************************************************/
@@ -644,7 +645,7 @@ HVC_API HVCW_INT32 HVCW_SetMicSensitivity(HHVC hHVC, HVCW_UINT32 unSensitivity);
 HVC_API HVCW_INT32 HVCW_GetMicSensitivity(HHVC hHVC, HVCW_UINT32 *punSensitivity);
 
 /* カメラWiFi-RSSI値取得関数 */
-HVC_API HVCW_INT32 HVCW_GetWiFiRSSI(HHVC hHVC, HVCW_INT32 *plWifiRssi);
+HVC_API HVCW_INT32 HVCW_GetWiFiRSSI(HHVC hHVC, HVCW_INT32 *pnWifiRssi);
 
 /* ネットワーク設定用音声ファイル作成関数 */
 HVC_API HVCW_INT32 HVCW_GenerateDataSoundFile(HVCW_UINT8 *pucTargetFile, HVCW_UINT8 *pucSSID, HVCW_UINT8 *pucPassword, HVCW_UINT8 *pusAccessToken);
@@ -665,10 +666,10 @@ HVC_API HVCW_INT32 HVCW_StartLive(HHVC hHVC,
 HVC_API HVCW_INT32 HVCW_StopLive(HHVC hHVC);
 
 /* ビデオフレームデータ解放関数 */
-HVC_API HVCW_INT32 HVCW_FreeDecodedVideoBuffer(HHVC hHVC, const HVCW_VOID **pBuffer);
+HVC_API HVCW_INT32 HVCW_FreeDecodedVideoBuffer(HHVC hHVC, const HVCW_VOID *pBuffer);
 
 /* 音声データ解放関数 */
-HVC_API HVCW_INT32 HVCW_FreeDecodedAudioBuffer(HHVC hHVC, const HVCW_VOID **pBuffer);
+HVC_API HVCW_INT32 HVCW_FreeDecodedAudioBuffer(HHVC hHVC, const HVCW_VOID *pBuffer);
 
 /* トークモード開始関数 */
 HVC_API HVCW_INT32 HVCW_EnterTalkMode(HHVC hHVC);
@@ -676,7 +677,7 @@ HVC_API HVCW_INT32 HVCW_EnterTalkMode(HHVC hHVC);
 HVC_API HVCW_INT32 HVCW_ExitTalkMode(HHVC hHVC);
 
 /* 音声データ転送関数 */
-HVC_API HVCW_INT32 HVCW_TransferSoundData(HHVC hHVC, HVCW_BYTE *pucSoundData, HVCW_UINT32 ulSoundLen);
+HVC_API HVCW_INT32 HVCW_TransferSoundData(HHVC hHVC, HVCW_BYTE *pucSoundData, HVCW_UINT32 unSoundLen);
 
 /* ライブ解像度変更関数 */
 HVC_API HVCW_INT32 HVCW_SetVideoResolution(HHVC hHVC, HVCW_VIDEO_RESOLUTION videoResolution);
@@ -692,7 +693,7 @@ HVC_API HVCW_INT32 HVCW_DisableSoundDetection(HHVC hHVC);
 HVC_API HVCW_INT32 HVCW_GetSoundDetection(HHVC hHVC, HVCW_BOOL *pbOn, HVCW_UINT32 *punSensitivity);
 
 /* 動体検知開始関数 */
-HVC_API HVCW_INT32 HVCW_EnableMotionDetection(HHVC hHVC, HVCW_UINT32 unDetectionParamCount, const HVCW_DETECTIONPARAM aDetectionParams[10]);
+HVC_API HVCW_INT32 HVCW_EnableMotionDetection(HHVC hHVC, HVCW_UINT32 unDetectionParamsCount, const HVCW_DETECTIONPARAM aDetectionParams[10]);
 /* 動体検知停止関数 */
 HVC_API HVCW_INT32 HVCW_DisableMotionDetection(HHVC hHVC);
 
@@ -711,6 +712,19 @@ HVC_API HVCW_INT32 HVCW_CheckNewFirmware(HHVC hHVC, HVCW_UINT8 aucVersion[128]);
 /* ストレージ情報取得関数 */
 HVC_API HVCW_INT32 HVCW_GetStorageInfo(HHVC hHVC, HVCW_STORAGEINFO *pStorageInfo);
 
+/* ファイル取得対応確認 */
+HVC_API HVCW_INT32 HVCW_IsSupportDownloadFileFast(HHVC hHVC, HVCW_BOOL *pbDownloadFileFast);
+
+/* ファイルダウンロード（高速版） */
+HVC_API HVCW_INT32 HVCW_DownloadFile_Fast(HHVC hHVC,
+                                          HVCW_FILE_EXT fileExt, 
+                                          const HVCW_CHAR *pcFileName,
+                                          HVCW_UINT32 unFileNameLength,
+                                          HVCW_INT32 *pnSize,
+                                          HVCW_UINT8 **pucBuffer);
+
+/* ファイルデータ格納buffer解放 */
+HVC_API HVCW_INT32 HVCW_FreeFileBuffer(HHVC hHVC, const HVCW_UINT8 *pucBuffer);
 
 /*--------------------------------------------------------*/
 /* HVCW SDK OKAO API                                      */
@@ -731,10 +745,10 @@ HVC_API HVCW_INT32 HVCW_SetOkaoMode(HHVC hHVC, HVCW_BOOL bOkaoMode, HVCW_UINT8 *
 HVC_API HVCW_INT32 HVCW_GetOkaoMode(HHVC hHVC, HVCW_BOOL *pbOkaoMode, HVCW_UINT8 *pucReturnStatus);
 
 /* ファイル数取得 */
-HVC_API HVCW_INT32 HVCW_GetFileCount(HHVC hHVC, HVCW_FILE_EXT fileExt, HVCW_UINT32 *pnFileCount, HVCW_UINT8 *pucReturnStatus);
+HVC_API HVCW_INT32 HVCW_GetFileCount(HHVC hHVC, HVCW_FILE_EXT fileExt, HVCW_UINT32 *punFileCount, HVCW_UINT8 *pucReturnStatus);
 
 /* ファイル情報取得 */
-HVC_API HVCW_INT32 HVCW_GetFileInfo(HHVC hHVC, HVCW_FILE_EXT fileExt, HVCW_UINT32 nFileIndex, HVCW_FILEINFO *pFileInfo, HVCW_UINT8 *pucReturnStatus);
+HVC_API HVCW_INT32 HVCW_GetFileInfo(HHVC hHVC, HVCW_FILE_EXT fileExt, HVCW_UINT32 unFileIndex, HVCW_FILEINFO *pFileInfo, HVCW_UINT8 *pucReturnStatus);
 
 /* ファイルダウンロード */
 HVC_API HVCW_INT32 HVCW_DownloadFile(HHVC hHVC, const HVCW_FILEINFO *pFileInfo, HVCW_UINT8 *pucBuffer, HVCW_UINT8 *pucReturnStatus);
@@ -743,11 +757,6 @@ HVC_API HVCW_INT32 HVCW_UploadFile(HHVC hHVC, HVCW_CHAR acFileName[40], HVCW_INT
 
 /* ファイルの削除 */
 HVC_API HVCW_INT32 HVCW_DeleteFile(HHVC hHVC, const HVCW_FILEINFO *pFileInfo, HVCW_UINT8 *pucReturnStatus);
-
-/* 保存画像サイズ設定 */
-HVC_API HVCW_INT32 HVCW_SetSaveImageSize(HHVC hHVC, HVCW_IMAGE_SIZE imageSize, HVCW_UINT8 *pucReturnStatus);
-/* 保存画像サイズ取得 */
-HVC_API HVCW_INT32 HVCW_GetSaveImageSize(HHVC hHVC, HVCW_IMAGE_SIZE *pimageSize, HVCW_UINT8 *pucReturnStatus);
 
 /* OKAO実行画像サイズ取得 */
 HVC_API HVCW_INT32 HVCW_GetLastOkaoImageSize(HHVC hHVC, HVCW_INT32 *pnImgBufSize, HVCW_UINT8 *pucReturnStatus);
@@ -795,7 +804,7 @@ HVC_API HVCW_INT32 HVCW_ALBUM_DeleteAllData(HHVC hHVC, HVCW_UINT8 *pucReturnStat
 HVC_API HVCW_INT32 HVCW_ALBUM_GetRegistrationStatus (HHVC hHVC, HVCW_INT32 nUserID, HVCW_BOOL abExist[10], HVCW_UINT8 *pucReturnStatus);
 
 /* アルバムサイズ取得 */
-HVC_API HVCW_INT32 HVCW_ALBUM_GetSize(HHVC hHVC, HVCW_INT32 *nAlbumSize, HVCW_UINT8 *pucReturnStatus);
+HVC_API HVCW_INT32 HVCW_ALBUM_GetSize(HHVC hHVC, HVCW_INT32 *pnAlbumSize, HVCW_UINT8 *pucReturnStatus);
 
 /* アルバムのダウンロード */
 HVC_API HVCW_INT32 HVCW_ALBUM_Download(HHVC hHVC, HVCW_UINT8 *pucAlbum, HVCW_UINT8 *pucReturnStatus);

@@ -26,5 +26,8 @@
 #define HVCW_NO_FACE                 30              /* 顔検出結果が0                    */
 #define HVCW_PLURAL_FACES            31              /* 顔検出結果が複数存在する         */
 #define HVCW_INVALID_RECEIVEDATA     40              /* 受信データが不正                 */
+#define HVCW_NOFILE                  50              /* ファイルが存在しない             */
+#define HVCW_SD_NOT_INSERT           61              /* SDカード未挿入                   */
+#define HVCW_SD_READ                 62              /* SDカード読み込みエラー           */
 
 #endif /* __HVCWCOMMONDEF_H */
