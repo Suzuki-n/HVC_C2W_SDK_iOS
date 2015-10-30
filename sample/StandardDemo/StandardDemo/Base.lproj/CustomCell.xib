@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="exec_param_cell" id="VNZ-ZN-2Ml" customClass="CustomCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VNZ-ZN-2Ml" id="J1L-jf-HLO">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最小検知サイズ" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ePL-cS-N5G">
+                        <rect key="frame" x="8" y="8" width="119" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ULD-28-acn">
+                        <rect key="frame" x="151" y="6" width="155" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="155" id="TJr-lb-U7c"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="ULD-28-acn" secondAttribute="bottom" constant="7" id="7GV-dB-m7u"/>
+                    <constraint firstItem="ULD-28-acn" firstAttribute="top" secondItem="J1L-jf-HLO" secondAttribute="top" constant="6" id="7pD-O2-pla"/>
+                    <constraint firstItem="ePL-cS-N5G" firstAttribute="leading" secondItem="J1L-jf-HLO" secondAttribute="leading" constant="8" id="9eJ-VF-BNx"/>
+                    <constraint firstAttribute="trailing" secondItem="ULD-28-acn" secondAttribute="trailing" constant="14" id="S0S-rf-xR1"/>
+                    <constraint firstItem="ePL-cS-N5G" firstAttribute="top" secondItem="J1L-jf-HLO" secondAttribute="top" constant="8" id="hAM-cW-gPf"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="Label" destination="ePL-cS-N5G" id="IaR-wI-G97"/>
+                <outlet property="TextField" destination="ULD-28-acn" id="Bcr-Wr-j3S"/>
+            </connections>
+            <point key="canvasLocation" x="494" y="199"/>
+        </tableViewCell>
+    </objects>
+</document>
