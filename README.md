@@ -27,7 +27,7 @@
          HvcwCommonDef.h           エラーコード定義
 		 
       sample/
-         StandardDemo/             基本サンプルデモプロジェクト(Android Studio)
+         StandardDemo/             基本サンプルデモプロジェクト(XCode7.0.1)
 
 
 ###[ご使用にあたって]
