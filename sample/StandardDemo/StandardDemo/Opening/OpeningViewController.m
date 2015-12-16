@@ -230,7 +230,7 @@ typedef NS_ENUM(NSInteger,STATUS) {
         HVCW_UINT8  returnStatus;
         NSString    *rtn_str;
         
-        HVCW_INT32  nAppID = 100;
+        HVCW_INT32  nAppID = 100; // 開発者向けは現在100固定
         
         result = HVCW_SetAppID( hHVC, nAppID, &returnStatus );
         

@@ -435,19 +435,6 @@ static HVCWebAPIManager* sharedInstance;
 #endif
 
     // Push通知デバイストークンをチェック
-    // mod covia 2015/09/30
-    /*
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(appDelegate.pushNotificationDeviceToken){
-        // Push通知デバイストークンを追記する
-        body = [NSString stringWithFormat:@"%@&notificationId=%@", body, appDelegate.pushNotificationDeviceToken];
-        NSLog(@"loginWithSNSInfo appDelegate.pushNotificationDeviceToken:%@", appDelegate.pushNotificationDeviceToken);
-    }else{
-        // デバイストークン未取得
-        NSLog(@"loginWithSNSInfo デバイストークン未取得");
-    }
-    */
-    
     if(snsAccessTokenSecret){
         // Push通知デバイストークンを追記する
         body = [NSString stringWithFormat:@"%@&snsAccessTokenSecret=%@", body, snsAccessTokenSecret];
@@ -672,19 +659,6 @@ static HVCWebAPIManager* sharedInstance;
 
     if(self.accessToken){
         [self.callbacks setObject:completed forKey:kHVCWebAPIManager_API_setNotification.lastPathComponent];
-        
-        // mod covia 2015/09/30
-        /*
-        NSURL *url = [NSURL URLWithString:kHVCWebAPIManager_API_setNotification];
-        //リクエスト用のパラメータを設定
-        NSString *body;
-        body = [NSString stringWithFormat:@"enableMotion=%@&enableSound=%@&enableTimer=%@",
-                kBOOLToString(settings.motion.boolValue), kBOOLToString(settings.sound.boolValue), kBOOLToString(settings.timer.boolValue)];
-        NSLog(@"setNotification body:%@", body);
-        
-        //リクエスト用のパラメータを設定
-        [self webApiRequestWithURL:url token:self.accessToken body:body];
-         */
     }else{
         NSLog(@"アクセストークンが未取得");
         completed(NO, eHVCWebAPIManagerError_AccessTokenError);
